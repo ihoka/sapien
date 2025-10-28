@@ -3,7 +3,8 @@
     "allow": [
       "Bash(rails --version:*)",
       "Bash(ruby --version:*)",
-      "Bash(rails new:*)"
+      "Bash(rails new:*)",
+      "Bash(mkdir:*)"
     ],
     "deny": [],
     "ask": []

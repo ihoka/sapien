@@ -478,6 +478,46 @@ The project uses GitHub Actions for continuous integration (`.github/workflows/c
 - **Solid Cache**: Database-backed caching (no Redis needed)
 - **Asset precompilation**: Assets precompiled in Docker build
 
+## Project Context & Memory
+
+### Product Vision
+
+Sapien is a multi-platform social media management and automation tool. We enable users to schedule, post, and manage content across multiple social platforms from a single Rails-based interface.
+
+### Platform Strategy
+
+**Phase 1 (Current):** Telegram integration (MVP)
+
+- Telegram chosen for free API, simple authentication, generous limits
+- Supports channels, groups, rich media, and scheduling
+
+**Phase 2:** X (Twitter) integration
+**Phase 3:** WhatsApp Business integration
+**Future:** LinkedIn, Instagram, Facebook, Mastodon, Discord, Bluesky
+
+See [docs/PRODUCT_STRATEGY.md](docs/PRODUCT_STRATEGY.md) for complete platform research and roadmap.
+
+### Tech Stack Commitment
+
+- **Framework:** Rails 8.1.0 + Ruby 3.4.5
+- **UI:** Hotwire (Turbo + Stimulus) - HTML over the wire, no separate frontend
+- **CSS:** Tailwind CSS
+- **Architecture:** Platform-agnostic adapter pattern, queue-based posting
+- **Background Jobs:** Solid Queue
+- **Caching:** Solid Cache
+- **Real-time:** Solid Cable
+
+### Business Model
+
+**Current:** Self-hosted, personal use, no payments
+**Future:** Subscription SaaS with Stripe integration
+
+### Development Phase
+
+**Status:** Planning & MVP development
+**Focus:** Build Telegram integration as proof of concept
+**Next Steps:** Core models, Telegram adapter, post scheduling
+
 ## Additional Resources
 - Rails Guides: https://guides.rubyonrails.org/
 - Rails API Documentation: https://api.rubyonrails.org/
