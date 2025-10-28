@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(rails --version:*)",
+      "Bash(ruby --version:*)",
+      "Bash(rails new:*)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}
