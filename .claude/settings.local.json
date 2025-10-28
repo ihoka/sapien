@@ -4,7 +4,10 @@
       "Bash(rails --version:*)",
       "Bash(ruby --version:*)",
       "Bash(rails new:*)",
-      "Bash(mkdir:*)"
+      "Bash(mkdir:*)",
+      "Bash(bin/rails generate:*)",
+      "Bash(bin/rails db:migrate:*)",
+      "Bash(bundle install:*)"
     ],
     "deny": [],
     "ask": []

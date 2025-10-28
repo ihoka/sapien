@@ -9,6 +9,28 @@ Rails.application.routes.draw do
   # get "manifest" => "rails/pwa#manifest", as: :pwa_manifest
   # get "service-worker" => "rails/pwa#service_worker", as: :pwa_service_worker
 
-  # Defines the root path route ("/")
-  # root "posts#index"
+  # Authentication routes
+  scope :auth, as: :auth do
+    # Signup
+    get "signup", to: "auth#new_signup", as: :signup
+    post "signup", to: "auth#create_signup"
+
+    # Login
+    get "login", to: "auth#new_login", as: :login
+    post "login", to: "auth#create_login"
+
+    # Verification
+    get "verify/:token", to: "auth#verify", as: :verify
+    get "verify_otp", to: "auth#new_otp_verification", as: :new_otp_verification
+    post "verify_otp", to: "auth#verify_otp", as: :verify_otp
+
+    # Resend
+    post "resend", to: "auth#resend", as: :resend
+
+    # Logout
+    delete "logout", to: "auth#destroy", as: :logout
+  end
+
+  # Temporary root route for testing
+  get "/" => redirect("/auth/login")
 end

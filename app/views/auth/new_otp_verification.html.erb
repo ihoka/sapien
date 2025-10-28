@@ -1,0 +1,143 @@
+<div class="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+  <div class="max-w-md w-full space-y-8">
+    <div>
+      <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900">
+        Enter verification code
+      </h2>
+      <p class="mt-2 text-center text-sm text-gray-600">
+        We sent a 6-digit code to<br>
+        <strong><%= @email %></strong>
+      </p>
+    </div>
+
+    <div class="mt-8 space-y-6">
+      <div class="rounded-md shadow-sm -space-y-px">
+        <div>
+          <label for="code" class="sr-only">Verification code</label>
+          <input
+            type="text"
+            id="code"
+            name="code"
+            required
+            autofocus
+            maxlength="6"
+            pattern="\d{6}"
+            placeholder="Enter 6-digit code"
+            class="appearance-none rounded-md relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 text-center text-2xl tracking-widest font-bold focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm">
+        </div>
+      </div>
+
+      <div>
+        <button
+          type="button"
+          id="verify-button"
+          class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+          Verify Code
+        </button>
+      </div>
+
+      <div class="text-center">
+        <%= link_to "Resend code", auth_resend_path, method: :post, class: "text-sm text-blue-600 hover:text-blue-500" %>
+      </div>
+
+      <div id="error-message" class="hidden rounded-md bg-red-50 p-4">
+        <div class="flex">
+          <div class="ml-3">
+            <h3 class="text-sm font-medium text-red-800" id="error-text">
+            </h3>
+          </div>
+        </div>
+      </div>
+
+      <div id="attempts-remaining" class="hidden text-center text-sm text-gray-600">
+        <span id="attempts-text"></span>
+      </div>
+    </div>
+
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        const codeInput = document.getElementById('code');
+        const verifyButton = document.getElementById('verify-button');
+        const errorMessage = document.getElementById('error-message');
+        const errorText = document.getElementById('error-text');
+        const attemptsRemaining = document.getElementById('attempts-remaining');
+        const attemptsText = document.getElementById('attempts-text');
+
+        // Only allow numbers
+        codeInput.addEventListener('input', function(e) {
+          e.target.value = e.target.value.replace(/[^0-9]/g, '');
+        });
+
+        // Auto-submit when 6 digits entered
+        codeInput.addEventListener('input', function(e) {
+          if (e.target.value.length === 6) {
+            verifyCode();
+          }
+        });
+
+        // Verify button click
+        verifyButton.addEventListener('click', verifyCode);
+
+        function verifyCode() {
+          const code = codeInput.value;
+
+          if (code.length !== 6) {
+            showError('Please enter a 6-digit code');
+            return;
+          }
+
+          // Disable button during request
+          verifyButton.disabled = true;
+          verifyButton.textContent = 'Verifying...';
+
+          // Make request
+          fetch('<%= auth_verify_otp_path %>', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'X-CSRF-Token': document.querySelector('[name="csrf-token"]').content
+            },
+            body: JSON.stringify({
+              email: '<%= @email %>',
+              code: code
+            })
+          })
+          .then(response => response.json())
+          .then(data => {
+            if (data.success) {
+              window.location.href = data.redirect_url;
+            } else {
+              showError(data.error);
+              if (data.attempts_remaining !== undefined) {
+                showAttemptsRemaining(data.attempts_remaining);
+              }
+              verifyButton.disabled = false;
+              verifyButton.textContent = 'Verify Code';
+              codeInput.value = '';
+              codeInput.focus();
+            }
+          })
+          .catch(error => {
+            showError('An error occurred. Please try again.');
+            verifyButton.disabled = false;
+            verifyButton.textContent = 'Verify Code';
+          });
+        }
+
+        function showError(message) {
+          errorText.textContent = message;
+          errorMessage.classList.remove('hidden');
+        }
+
+        function showAttemptsRemaining(attempts) {
+          if (attempts > 0) {
+            attemptsText.textContent = `${attempts} attempt${attempts === 1 ? '' : 's'} remaining`;
+            attemptsRemaining.classList.remove('hidden');
+          } else {
+            attemptsRemaining.classList.add('hidden');
+          }
+        }
+      });
+    </script>
+  </div>
+</div>
