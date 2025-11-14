@@ -102,4 +102,6 @@ See [AGENTS.md](AGENTS.md) for development guidelines, code style, and testing c
 
 ## License
 
-[Add your license here]
+This project is licensed under the Business Source License 1.1. See [LICENSE](LICENSE) for details.
+
+The licensed work will convert to the Apache License, Version 2.0 on 2029-01-14.
