@@ -31,6 +31,9 @@ Rails.application.routes.draw do
     delete "logout", to: "auth#destroy", as: :logout
   end
 
-  # Temporary root route for testing
-  get "/" => redirect("/auth/login")
+  # Dashboard
+  get "dashboard", to: "dashboard#index"
+
+  # Root route
+  root "dashboard#index"
 end

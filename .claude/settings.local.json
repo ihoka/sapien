@@ -7,7 +7,14 @@
       "Bash(mkdir:*)",
       "Bash(bin/rails generate:*)",
       "Bash(bin/rails db:migrate:*)",
-      "Bash(bundle install:*)"
+      "Bash(bundle install:*)",
+      "Bash(bin/rails tailwindcss:install:*)",
+      "Bash(bin/rails routes:*)",
+      "Bash(cat:*)",
+      "Bash(git check-ignore:*)",
+      "Bash(git rm:*)",
+      "Bash(git add:*)",
+      "Bash(git reset:*)"
     ],
     "deny": [],
     "ask": []
